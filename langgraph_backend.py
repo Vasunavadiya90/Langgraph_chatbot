@@ -1,14 +1,21 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, Annotated
 from langchain_core.messages import BaseMessage
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.message import add_messages
 from dotenv import load_dotenv
 
 load_dotenv()
 
-llm = ChatOpenAI()
+
+llm = ChatAnthropic(
+    model="vasuuu-aii",
+    api_key='sk-58b01039c5b7309c-d92f2d-877862ff',
+    base_url="http://localhost:20128",
+    max_tokens=512,
+    temperature=0
+)
 
 class ChatState(TypedDict):
     messages: Annotated[list[BaseMessage], add_messages]
@@ -27,3 +34,8 @@ graph.add_edge(START, "chat_node")
 graph.add_edge("chat_node", END)
 
 chatbot = graph.compile(checkpointer=checkpointer)
+
+
+
+
+
