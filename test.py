@@ -1,14 +1,16 @@
-import streamlit as st
+from langgraph.checkpoint.sqlite import SqliteSaver
+import sqlite3
 
-with st.chat_message('user'):
-    st.text('HIII')
+conn = sqlite3.connect(
+    "test_checkpoint.db",
+    check_same_thread=False
+)
 
+checkpointer = SqliteSaver(conn)
 
-with st.chat_message('assistant'):
-    st.text('How can I assist you ?')
+print("Checkpointer created successfully")
 
-with st.chat_message('user'):
-    st.text('I am vasu')
+for checkpoint in checkpointer.list(None):
+    print(checkpoint)
 
-
-user_input = st.chat_input('Type here')  
+print("Checkpoint listing completed")
